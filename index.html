@@ -74,17 +74,27 @@
 
   </div>
 </div>
-    <p align="center">
+    
     <p>Uh Oh Jazz was too lazy to put anything here</p>
-    <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
-    <canvas id="mycanvas"></canvas>
+
+<p align="center">
+	      <canvas id="drawingm"></canvas>
     </p>
-<script>
+
+ <!-- Run all the JavaScript stuff -->
+ <!-- Include the processing.js library -->
+
+ <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
+
+ <script>
 
 
-    var sketchProc = function(processingInstance) {
-        with (processingInstance) {
-size(400, 400);
+
+        var nig = function(processingInstance) {
+     with (processingInstance) {
+        size(400, 400);
+        frameRate(35);
+
 var xPositions = [235,210,300,273,250,320,294,220,249,190,200,312,228,195,201,301,310,276,236,248,250,165,175,184,211,229,222,232,260,293];
 var yPositions = [0,-350,-200,-250,-400,-300,-100,-180,-275,-50,-305,-426,-340,-180,-10,-408,-5,-151,-320,-92,-180,-230,-219,-505,-380,-430,-434,-400,-376,-308];
     
@@ -302,17 +312,12 @@ var yPositions = [0,-350,-200,-250,-400,-300,-100,-180,-275,-50,-305,-426,-340,-
     arc(95,335,20,20,-50,130);
     arc(80,370,40,20,-180,0);*/
     };
+}
+}
+        var canvas = document.getElementById("drawingm");
 
-
-
-        }
-    }
-
-    var canvas = document.getElementById("mycanvas"); 
-    var processingInstance = new Processing(canvas, sketchProc); 
-
+    var processingInstance = new Processing(canvas, nig);
 </script>
-
 </body>
 
 </html>
