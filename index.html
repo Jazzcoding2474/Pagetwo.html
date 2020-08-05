@@ -78,7 +78,7 @@
     
 
 <p align="center">
-	<p>Uh Oh Jazz was too lazy to put anything here</p>
+	<p>Here is my attempt at making a 3D game Chicken games was the sowfware I used to make this work on HTML.</p>
 	      <canvas id="drawingm"></canvas>
     </p>
 
@@ -94,202 +94,1208 @@
         var nig = function(processingInstance) {
      with (processingInstance) {
         size(400, 400);
-        frameRate(35);
+frameRate(45);
 
-var xPositions = [235,210,300,273,250,320,294,220,249,190,200,312,228,195,201,301,310,276,236,248,250,165,175,184,211,229,222,232,260,293];
-var yPositions = [0,-350,-200,-250,-400,-300,-100,-180,-275,-50,-305,-426,-340,-180,-10,-408,-5,-151,-320,-92,-180,-230,-219,-505,-380,-430,-434,-400,-376,-308];
-    
-    draw = function() {
-        
-    background(199, 218, 219);
-    fill(219, 219, 219);
-    arc(530,319,800,200,180,360);
-    fill(247, 247, 247);
-    arc(43,363,800,200,180,360);
-    fill(255, 255, 255);
-    arc(515,394,800,200,180,360);
-    rect(150,314,200,300);
+var u = createGraphics(width, height, P3D);
+//-70
+var cubeT = -70;
+u.lights();
 
-    
-        for (var i = 0; i < xPositions.length; i++) {
-            noStroke();
-            fill(255, 255, 255);
-            ellipse(xPositions[i], yPositions[i], 5, 5);
-            if(yPositions[i] > 335) {
-                yPositions[i] = random(-230,0);
-                xPositions[i] = random(160,325);
-            }
-            yPositions[i] += 3;
+
+
+rectMode(CENTER);
+textAlign(CENTER, CENTER);
+var g = createGraphics(width/2.5, height/2.5, P3D);
+
+var blocks = [];
+var arrows = [];
+var words = [];
+
+var canShoot = false;
+//0
+var level = 0;
+var jump = true;
+var canJump = false;
+var canWallJump = false;
+var respawn = false;
+var shoot = false;
+var start = true;
+var TurnSpeed = 0.03;
+var spawnX = 0;
+var spawnY = 0;
+var spawnZ = 0;
+var X = spawnX;
+var Y = spawnY;
+var Z = spawnZ;
+var rx = 0;
+var ry = PI;
+var rz = 0;
+var Speed = 5;
+var moveSped = 2;
+var yvel = 0;
+var xvel = 0;
+var zvel = 0;
+var mov = 0;
+var staminaTimer = 0;
+var staminaSpeed = 0.1;
+var stamina =  30;
+var stSpeed = 0.2;
+var playerh = 30;
+var health = playerh;
+var ground = false;
+
+var keys = [];
+var keyPressed = function() {
+    keys[keyCode] = true;
+};
+var keyReleased = function() {
+    keys[keyCode] = false;
+};
+
+g.lights();
+g.noStroke();
+
+var buildLevel = function() {
+    if(level === 1) {
+        spawnX = 0;
+        spawnY = 0;
+        spawnZ = 0;
+        words.push({
+            x:0,
+            y:-50,
+            z:467,
+            r:PI,
+            f:color(0, 0, 0),
+            m:"Welcome to my parkour simulator!\nUse WASD to move and the arrow keys to turn.\nHold down the shift key while moving foward\nto sprint.\nPress the spacebar to jump",
+            s:50
+        });
+        blocks.push({
+            x:0,
+            y:-300,
+            z:0,
+            w:1060,
+            h:60,
+            d:1060,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:0,
+            y:300,
+            z:0,
+            w:1060,
+            h:60,
+            d:1060,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:275,
+            y:0,
+            z:505,
+            w:450,
+            h:540,
+            d:50,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:-275,
+            y:0,
+            z:505,
+            w:450,
+            h:540,
+            d:50,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:0,
+            y:-90,
+            z:505,
+            w:100,
+            h:360,
+            d:50,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:0,
+            y:0,
+            z:-505,
+            w:1000,
+            h:540,
+            d:50,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:505,
+            y:0,
+            z:0,
+            w:50,
+            h:540,
+            d:1060,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:-505,
+            y:0,
+            z:0,
+            w:50,
+            h:540,
+            d:1060,
+            f:color(196, 194, 147)
+        });
+        blocks.push({
+            x:0,
+            y:302,
+            z:600,
+            w:102,
+            h:60,
+            d:200,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:0,
+            y:400,
+            z:850,
+            w:100,
+            h:60,
+            d:200,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-200,
+            y:398,
+            z:950,
+            w:500,
+            h:60,
+            d:100,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-850,
+            y:398,
+            z:950,
+            w:500,
+            h:60,
+            d:100,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1200,
+            y:338,
+            z:870,
+            w:200,
+            h:60,
+            d:60,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1550,
+            y:278,
+            z:870,
+            w:200,
+            h:60,
+            d:60,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1550,
+            y:248,
+            z:825,
+            w:200,
+            h:60,
+            d:30,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1550,
+            y:188,
+            z:765,
+            w:200,
+            h:60,
+            d:30,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1550,
+            y:128,
+            z:705,
+            w:200,
+            h:60,
+            d:30,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-1550,
+            y:128,
+            z:350,
+            w:200,
+            h:60,
+            d:350,
+            f:color(255, 0, 0)
+        });
+        words.push({
+            x:-1300,
+            y:0,
+            z:145,
+            r:0,
+            f:color(255, 0, 0),
+            m:"You can wall jump\noff of yellow walls",
+            s:40
+        });
+        blocks.push({
+            x:-1300,
+            y:48,
+            z:100,
+            w:200,
+            h:200,
+            d:60,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:-1100,
+            y:128,
+            z:350,
+            w:200,
+            h:60,
+            d:200,
+            f:color(255, 0, 0)
+        });
+        blocks.push({
+            x:-800,
+            y:-100,
+            z:500,
+            w:200,
+            h:400,
+            d:60,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:-800,
+            y:-100,
+            z:300,
+            w:200,
+            h:400,
+            d:60,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:0,
+            y:-400,
+            z:0,
+            w:75,
+            h:75,
+            d:75,
+            f:color(50, 50, 50),
+            j:false
+        });
+        words.push({
+            x:0,
+            y:-500,
+            z:0,
+            r:PI*1.7,
+            f:color(255, 0, 0),
+            m:"Touch the black block\nto go to the next level",
+            s:40
+        });
+    }
+    if(level === 2) {
+        spawnX = 0;
+        spawnY = 2000;
+        spawnZ = 0;
+        blocks.push({
+            x:0,
+            y:-800,
+            z:0,
+            w:500,
+            h:60,
+            d:500,
+            f:color(0, 0, 255)
+        });
+        words.push({
+            x:0,
+            y:-1050,
+            z:300,
+            r:PI,
+            f:color(0, 0, 255),
+            m:"Level 2",
+            s:60
+        });
+        blocks.push({
+            x:0,
+            y:-800,
+            z:500,
+            w:200,
+            h:60,
+            d:500,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:150,
+            y:-800,
+            z:950,
+            w:50,
+            h:60,
+            d:50,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:0,
+            y:-800,
+            z:1150,
+            w:50,
+            h:60,
+            d:50,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:-150,
+            y:-800,
+            z:1350,
+            w:50,
+            h:60,
+            d:50,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:0,
+            y:-800,
+            z:1800,
+            w:150,
+            h:60,
+            d:400,
+            f:color(0, 0, 255)
+        });
+        words.push({
+            x:0,
+            y:-1050,
+            z:2100,
+            r:PI,
+            f:color(0, 0, 255),
+            m:"If you hit the ground\ntoo hard you lose health",
+            s:40
+        });
+        blocks.push({
+            x:200,
+            y:-400,
+            z:2200,
+            w:60,
+            h:800,
+            d:200,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:0,
+            y:0,
+            z:2400,
+            w:150,
+            h:60,
+            d:500,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:120,
+            y:0,
+            z:2900,
+            w:60,
+            h:1000,
+            d:200,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:-120,
+            y:0,
+            z:3100,
+            w:60,
+            h:1000,
+            d:200,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:120,
+            y:0,
+            z:3300,
+            w:60,
+            h:1000,
+            d:200,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:0,
+            y:650,
+            z:3600,
+            w:150,
+            h:60,
+            d:500,
+            f:color(0, 0, 255)
+        });
+        blocks.push({
+            x:100,
+            y:400,
+            z:3800,
+            w:60,
+            h:400,
+            d:100,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:0,
+            y:400,
+            z:3900,
+            w:150,
+            h:400,
+            d:100,
+            f:color(255, 255, 0),
+            j:true
+        });
+        blocks.push({
+            x:0,
+            y:300,
+            z:3700,
+            w:75,
+            h:75,
+            d:75,
+            f:color(50, 50, 50),
+            j:false
+        });
+    }
+    if(level === 3) {
+        spawnX = 0;
+        spawnY = 0;
+        spawnZ = 0;
+        words.push({
+            x:0,
+            y:-75,
+            z:300,
+            r:PI,
+            f:color(0, 255, 0),
+            m:"Level 3",
+            s:60
+        });
+        blocks.push({
+            x:0,
+            y:150,
+            z:0,
+            w:500,
+            h:60,
+            d:500,
+            f:color(0, 255, 0)
+        });
+        blocks.push({
+            x:0,
+            y:150,
+            z:500,
+            w:100,
+            h:60,
+            d:500,
+            f:color(0, 255, 0)
+        });
+        blocks.push({
+            x:0,
+            y:50,
+            z:1000,
+            w:100,
+            h:200,
+            d:500,
+            f:color(255, 255, 0),
+            j:true
+        });
+    }
+};
+draw = function() {
+    if(cubeT - 330 < 0) {
+        u.camera(0, 0, 0, 0, 0, -1, 0, 1, 0);
+        u.background(255, 255, 255);
+        u.translate(0, 0, -70);
+        u.rotateX(-PI/4.5);
+        u.rotateY(PI/4);
+        if(height - cubeT*5 - height/2 - 90  <= -110) {
+            u.background(0, 0, 0);
+            u.rotateY(-(cubeT - 65)*PI/180*2);
+        }
+        u.fill(255, 255, 255, cubeT*3 - 70*3);
+        u.stroke(0, 0, 0);
+        if(height - cubeT*5 - height/2 - 90  <= -110) {
+            u.box(10, 10, 10);
+        }
+        u.fill(128, 128, 128, cubeT*30 - 1800);
+        u.noStroke();
+        u.translate(5, 5, 5);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(-10, -10, -10);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(10, 0, 0);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(0, 0, 10);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(-10, 0, 0);
+        u.fill(128, 128, 128);
+        u.sphere(0.5);
+        u.fill(128, 128, 128, cubeT*30 - 1800);
+        u.translate(0, 10, 0);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(0, 0, -10);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
+        }
+        u.translate(10, 0, 0);
+        if(height - cubeT*5 - height/2 - 90 <= -110) {
+            u.sphere(0.5);
         }
         
-    //windows and walls
-    var windowX=145;
-    var windowY=75;
-    
-    fill(136, 195, 212);
-    rect(0,0,160,400);
-    rect(325,0,175,400);
-    rect(0,330,400,100);
-    rect(0,0,400,90);
-    
-    fill(199, 161, 131);
-    rect(windowX-2,windowY-2,19,274);
-    rect(windowX-2,windowY-2,195,19);
-    rect(windowX-2,windowY+253,195,19);
-    rect(windowX+178,windowY-2,19,274);
-    rect(windowX,windowY+129,195,17);
-    
-    fill(112, 166, 181);
-    rect(windowX,80,15,265);
-    rect(windowX,75,195,15);
-    rect(windowX,330,195,15);
-    rect(windowX+180,80,15,265);
-    rect(windowX,205,195,15);
-    
-    fill(181, 152, 102);
-    quad(windowX,346,windowX+195,346,windowX+205,355,windowX-10,355);
-    fill(207, 174, 116);
-    rect(windowX-10,355,215,10);
-    fill(181, 152, 102);
-    rect(windowX+30,365,10,15);
-    rect(windowX+155,365,10,15);
-    fill(161, 161, 161);
-    rect(windowX+90,200,12,5);
-    fill(138, 138, 138);
-    rect(windowX+90,200,5,5);
-    
-    
-   
-  
-    
-    //clock
-    
-    
-    
-    var clockPosX=50;
-    var clockPosY=150;
-    fill(0, 0, 0);
-    ellipse(clockPosX,clockPosY,100,100);
-    fill(255, 255, 255);
-    ellipse(clockPosX,clockPosY,80,80);
-    noFill();
-    stroke(0, 0, 0);
-    strokeWeight(2);
-    arc(clockPosX,clockPosY,90,90,0,360);
-    noStroke();
-    // spin-off by Madeliv (@Madeliv) 
-// https://www.khanacademy.org/profile/Madeliv/programs
-// based on a beautiful program by arecchan2.0 @arecchan 
-// https://www.khanacademy.org/profile/arecchan/programs
-    pushMatrix();
-    fill(255, 255, 255);
-    translate(clockPosX,clockPosY);
-    fill(0, 0, 0);
-    textAlign(CENTER,BASELINE);
-    text("1",16,-24);
-    text("2",28,-13);
-    text("3",34,4);
-    text("4",27,21);
-    text("5",14,31);
-    text("6",-1,35);
-    text("7",-17,32);
-    text("8",-29,21);
-    text("9",-35,4);
-    text("10",-29,-12);
-    text("11",-17,-24);
-    text("12",-1,-29);
-    rotate(second()*6);
-    rect(0,0,1.5,-35);
-    popMatrix();
-    
-    pushMatrix();
-    translate(clockPosX,clockPosY);
-    
-    rotate(minute()*6);
-    rect(-1,0,2.5,-23);
-    popMatrix();
-    
-    pushMatrix();
-    translate(clockPosX,clockPosY);
-    
-    rotate(hour()*30);
-    rect(-1,0,3.3,-18);
-    popMatrix();
-    
-    fill(0, 0, 0);
-    ellipse(clockPosX,clockPosY,3,3);
-    
-    if (yPositions>375){
-        yPositions=(random(-300,0));
-        yPositions+=5;
+        imageMode(CENTER);
+        image(u, width/2, height/2, width, height);
+        cubeT++;
+        fill(128, 128, 128, 255 - cubeT*30 + 1800);
+        noStroke();
+        if(height - cubeT*5 >= height/2) {
+            ellipse(width/2 - width/10, height - cubeT*5, 8, 8);
+        }
+        if(height - cubeT*5 >= height/2 + 60) {
+            ellipse(width/2 - width/10, height - cubeT*5 - 60, 8, 8);
+        }
+        if(height - cubeT*5 >= height/2 + 120) {
+            ellipse(width/2 - width/10, height - cubeT*5 - 120, 8, 8);
+        }
+        if(height - cubeT*5 >= height/2 + 180) {
+            ellipse(width/2 - width/10, height - cubeT*5 - 180, 8, 8);
+        }
+        if(height - cubeT*5 >= height/2 + 240) {
+            ellipse(width/2 - width/10, height - cubeT*5 - 240, 8, 8);
+        }
+        if(height - cubeT*5 >= height/2 + 300) {
+            ellipse(width/2 - width/10, height - cubeT*5 - 300, 8, 8);
+        }
+        
+        if(height - cubeT*5 - height/2 - 90 >= -110) {
+            if(height - cubeT*5 < height/2) {
+                ellipse(sin(height - cubeT*5 - height/2 - 90)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 90)*(width/10) + height/2, 8, 8);
+            }
+            if(height - cubeT*5 <= height/2 + 60) {
+                ellipse(sin(height - cubeT*5 - height/2 - 150)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 150)*(width/10) + height/2, 8, 8);
+            }
+            if(height - cubeT*5 <= height/2 + 120) {
+                ellipse(sin(height - cubeT*5 - height/2 - 210)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 210)*(width/10) + height/2, 8, 8);
+            }
+            if(height - cubeT*5 <= height/2 + 180) {
+                ellipse(sin(height - cubeT*5 - height/2 - 270)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 270)*(width/10) + height/2, 8, 8);
+            }
+            if(height - cubeT*5 <= height/2 + 240) {
+                ellipse(sin(height - cubeT*5 - height/2 - 330)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 330)*(width/10) + height/2, 8, 8);
+            }
+            if(height - cubeT*5 <= height/2 + 300) {
+                ellipse(sin(height - cubeT*5 - height/2 - 390)*(width/10) + width/2, cos(height - cubeT*5 - height/2 - 390)*(width/10) + height/2, 8, 8);
+            }
+        }
+        textAlign(CENTER, CENTER);
+        fill(128, 128, 128, cubeT*3 - 70*3);
+        textSize(30);
+        text("SupremeChicken Games", width/2, height/1.42857142857);
+        rectMode(CENTER);
+        fill(0, 0, 0, cubeT*3 - 210*3);
+        rect(width/2, height/2, width, height);
+    }else {
+        frameRate(50);
+        cursor("none");
+        if(start === true) {
+            level++;
+            blocks.length = 0;
+            arrows.length = 0;
+            words.length = 0;
+            buildLevel();
+            canShoot = false;
+            jump = true;
+            canJump = false;
+            canWallJump = false;
+            respawn = false;
+            shoot = false;
+            TurnSpeed = 0.03;
+            X = spawnX;
+            Y = spawnY;
+            Z = spawnZ;
+            rx = 0;
+            ry = PI;
+            rz = 0;
+            Speed = 5;
+            moveSped = 2;
+            yvel = 0;
+            xvel = 0;
+            zvel = 0;
+            mov = 0;
+            staminaTimer = 0;
+            staminaSpeed = 0.1;
+            stamina =  30;
+            stSpeed = 0.2;
+            playerh = 30;
+            health = playerh;
+            ground = false;
+            start = false;
+        }
+        
+        g.background(255, 255, 255);
+        g.camera(0, 0, 0, 0, 0, -1, 0, 1, 0);
+        g.rotateX(-rx);
+        g.rotateY(ry);
+        g.rotateZ(-rz);
+        g.translate(-X, Y, -Z);
+        if(health > 0) {
+            for(var i = 0; i < words.length; i++) {
+                var w = words[i];
+                g.pushMatrix();
+                g.textAlign(CENTER);
+                g.fill(w.f);
+                g.textSize(w.s);
+                g.translate(w.x*2, w.y*2, w.z*2);
+                g.rotateY(w.r);
+                g.text(w.m, 0, 0);
+                g.noStroke();
+                g.popMatrix();
+            }
+            for(var q = 0; q < 30; q++) {
+                for(var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i];
+                    if(X < 2*b.x + 2*(b.w/2) + 2*25 && X > 2*b.x + 2*(b.w/2) + 2*25 - 2 && Z < 2*b.z + 2*(b.d/2) + 2*24 && Z > 2*b.z - 2*(b.d/2) - 2*24 && -Y < 2*b.y + 2*(b.h/2) + 25*2 && -Y > 2*b.y - 2*(b.h/2) - 71*2) {
+                        if(b.j === true) {
+                            if(!keys[32] && canWallJump === false) {
+                                canWallJump = true;
+                            }
+                            if(keys[32] && canWallJump === true) {
+                                xvel = 4*2;
+                                Y += 2/30;
+                                if(yvel <= -4) {
+                                    yvel = 3;
+                                }else if(yvel < 0) {
+                                    yvel = 7;
+                                }else {
+                                    yvel += 7;
+                                }
+                                canWallJump = false;
+                            }else {
+                                X = 2*b.x + 2*(b.w/2) + 2*25 - 0.1;
+                                xvel = 0;
+                            }
+                        }else  if(b.j === false) {
+                            start = true;
+                        }else {
+                            X = 2*b.x + 2*(b.w/2) + 2*25;
+                            xvel = 0;
+                        }
+                    }
+                    if(X >= 2*b.x - 2*(b.w/2) - 2*25 && X <= 2*b.x - 2*(b.w/2) - 2*25 + 2 && Z < 2*b.z + 2*(b.d/2) + 2*24 && Z > 2*b.z - 2*(b.d/2) - 2*24 && -Y < 2*b.y + 2*(b.h/2) + 25*2 && -Y > 2*b.y - 2*(b.h/2) - 71*2) {
+                        if(b.j === true) {
+                            if(!keys[32] && canWallJump === false) {
+                                canWallJump = true;
+                            }
+                            if(keys[32] && canWallJump === true) {
+                                xvel = -4*2;
+                                Y += 2/30;
+                                if(yvel <= -4) {
+                                    yvel = 3;
+                                }else if(yvel < 0) {
+                                    yvel = 7;
+                                }else {
+                                    yvel += 7;
+                                }
+                                canWallJump = false;
+                            }else {
+                                X = 2*b.x - 2*(b.w/2) - 2*25 + 0.1;
+                                xvel = 0;
+                            }
+                        }else  if(b.j === false) {
+                            start = true;
+                        }else {
+                            X = 2*b.x - 2*(b.w/2) - 2*25;
+                            xvel = 0;
+                        }
+                    }
+                    if(Z < 2*b.z + 2*(b.d/2) + 2*25 && Z > 2*b.z + 2*(b.d/2) + 2*25 - 2 && X < 2*b.x + 2*(b.w/2) + 2*25 && X > 2*b.x - 2*(b.w/2) - 2*25 && -Y < 2*b.y + 2*(b.h/2) + 25*2 && -Y > 2*b.y - 2*(b.h/2) - 71*2) {
+                        if(b.j === true) {
+                            if(!keys[32] && canWallJump === false) {
+                                canWallJump = true;
+                            }
+                            if(keys[32] && canWallJump === true) {
+                                zvel = 4*2;
+                                Y += 2/30;
+                                if(yvel <= -4) {
+                                    yvel = 3;
+                                }else if(yvel < 0) {
+                                    yvel = 7;
+                                }else {
+                                    yvel += 7;
+                                }
+                                canWallJump = false;
+                            }else {
+                                Z = 2*b.z + 2*(b.d/2) + 2*25 - 0.1;
+                                zvel = 0;
+                            }
+                        }else  if(b.j === false) {
+                            start = true;
+                        }else {
+                            Z = 2*b.z + 2*(b.d/2) + 2*25;
+                            zvel = 0;
+                        }
+                    }
+                    if(Z > 2*b.z - 2*(b.d/2) - 2*25 && Z < 2*b.z - 2*(b.d/2) - 2*25 + 2 && X < 2*b.x + 2*(b.w/2) + 2*25 && X > 2*b.x - 2*(b.w/2) - 2*25 && -Y < 2*b.y + 2*(b.h/2) + 25*2 && -Y > 2*b.y - 2*(b.h/2) - 71*2) {
+                        if(b.j === true) {
+                            if(!keys[32] && canWallJump === false) {
+                                canWallJump = true;
+                            }
+                            if(keys[32] && canWallJump === true) {
+                                zvel = -4*2;
+                                Y += 2/30;
+                                if(yvel <= -4) {
+                                    yvel = 3;
+                                }else if(yvel < 0) {
+                                    yvel = 7;
+                                }else {
+                                    yvel += 7;
+                                }
+                                canWallJump = false;
+                            }else {
+                                Z = 2*b.z - 2*(b.d/2) - 2*25 + 0.1;
+                                zvel = 0;
+                            }
+                        }else  if(b.j === false) {
+                            start = true;
+                        }else {
+                            Z = 2*b.z - 2*(b.d/2) - 2*25;
+                            zvel = 0;
+                        }
+                    }
+                    if(-Y < 2*b.y + 2*(b.h/2) + 2*25 && -Y >= 2*b.y + 2*(b.h/2) + 2*25 - 30*2 && X < 2*b.x + 2*(b.w/2) + 2*25 && X > 2*b.x - 2*(b.w/2) - 2*25 && Z < 2*b.z + 2*(b.d/2) + 2*25 && Z > 2*b.z - 2*(b.d/2) - 2*25) {
+                        if(b.j === false) {
+                            start = true;
+                        }else {
+                            if(yvel > 0) {
+                                yvel = 0;
+                            }
+                            Y -= 2;
+                        }
+                    }
+                    if(-Y >= 2*b.y - 2*(b.h/2) - 2*101 && -Y <= 2*b.y - 2*(b.h/2) - 2*100 + 60*2 && X < 2*b.x + 2*(b.w/2) + 2*25 && X > 2*b.x - 2*(b.w/2) - 2*25 && Z < 2*b.z + 2*(b.d/2) + 2*25 && Z > 2*b.z - 2*(b.d/2) - 2*25) {
+                        if(b.j === false) {
+                            start = true;
+                        }else {
+                            ground = true;
+                            if(yvel/2 <= -10) {
+                                health -= (-yvel + 20);
+                            }
+                            yvel = 0;
+                            Y = -(2*b.y - 2*(b.h/2) - 2*101);
+                            if(canWallJump === true && b.j !== true) {
+                                canJump = false;
+                            }
+                            if(canJump === true) {
+                                if(keys[32]) {
+                                    jump = true;
+                                    Y += 2/30;
+                                    yvel = 4*2;
+                                    canJump = false;
+                                }
+                            }
+                            if(!keys[32] && ground === true) {
+                                canJump = true;
+                                jump = false;
+                            }
+                        }
+                    }else {
+                        ground = false;
+                    }
+                }
+                X += xvel/10;
+                Z += zvel/10;
+            }
+            if(yvel > 15) {
+                yvel = 15;
+            }
+            if(ground === true) {
+                jump = false;
+            }else {
+                jump = true;
+            }
+            for(var i = 0; i < blocks.length; i++) {
+                var b = blocks[i];
+                if(g.dist(2*b.x, 2*b.y, 2*b.z, X, -Y, Z) < 3000) {
+                    g.translate(2*b.x, 2*b.y, 2*b.z);
+                    g.fill(b.f);
+                    g.box(2*b.w, 2*b.h, 2*b.d);
+                    g.translate(2*-b.x, 2*-b.y, 2*-b.z);
+                    g.stroke(0, 0, 0);
+                    g.strokeWeight(1);
+                    if(g.dist(2*b.x, 2*b.y, 2*b.z, X, -Y, Z) < 1500) {
+                        g.translate(2*b.x, 2*b.y, 2*b.z);
+                        for(var l = 0; l <= b.h*2; l += b.h/2.5) {
+                            g.line(-b.w, -b.h + l, -b.d, b.w, -b.h + l, -b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.w*2; l += b.w/2.5) {
+                            g.line(-b.w + l, -b.h, -b.d, -b.w + l, b.h, -b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.h*2; l += b.h/2.5) {
+                            g.line(-b.w, -b.h + l, b.d, b.w, -b.h + l, b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.w*2; l += b.w/2.5) {
+                            g.line(-b.w + l, -b.h, b.d, -b.w + l, b.h, b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.d*2; l += b.d/2.5) {
+                            g.line(-b.w, -b.h, -b.d + l, b.w, -b.h, -b.d + l);
+                            
+                        }
+                        for(var l = 0; l <= b.w*2; l += b.w/2.5) {
+                            g.line(-b.w + l, -b.h, -b.d, -b.w + l, -b.h, b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.d*2; l += b.d/2.5) {
+                            g.line(-b.w, b.h, -b.d + l, b.w, b.h, -b.d + l);
+                            
+                        }
+                        for(var l = 0; l <= b.w*2; l += b.w/2.5) {
+                            g.line(-b.w + l, b.h, -b.d, -b.w + l, b.h, b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.d*2; l += b.d/2.5) {
+                            g.line(-b.w, -b.h, -b.d + l, -b.w, b.h, -b.d + l);
+                            
+                        }
+                        for(var l = 0; l <= b.h*2; l += b.h/2.5) {
+                            g.line(-b.w, -b.h + l, -b.d, -b.w, -b.h + l, b.d);
+                            
+                        }
+                        for(var l = 0; l <= b.d*2; l += b.d/2.5) {
+                            g.line(b.w, -b.h, -b.d + l, b.w, b.h, -b.d + l);
+                            
+                        }
+                        for(var l = 0; l <= b.h*2; l += b.h/2.5) {
+                            g.line(b.w, -b.h + l, -b.d, b.w, -b.h + l, b.d);
+                            
+                        }
+                        g.translate(2*-b.x, 2*-b.y, 2*-b.z);
+                    }
+                    g.noStroke();
+                }
+            }
+            if(keys[81] && shoot === true && canShoot === true) {
+                arrows.push({
+                    x:X,
+                    y:-Y,
+                    z:Z,
+                    mooX:(sin(180/PI*(-ry + PI))*(cos(180/PI*rx)*40) + X),
+                    mooY:(sin(180/PI*rx)*40 - Y),
+                    mooZ:(cos(180/PI*(-ry + PI))*(cos(180/PI*rx)*40) + Z),
+                    vx:1000,
+                    vy:1000,
+                    vz:1000,
+                    frx:1000,
+                    fry:1000,
+                    fvx:1000,
+                    fvy:1000,
+                    fvz:1000
+                });
+                shoot = false;
+            }
+            if(shoot === false && !keys[81]) {
+                shoot = true;
+            }
+            
+            for(var i = 0; i < arrows.length; i++) {
+                var a = arrows[i];
+                if(a.fry === 1000) {
+                    a.frx = rx;
+                    a.fry = ry;
+                }
+                if(a.fvy === 1000) {
+                    a.fvx = a.vx;
+                    a.fvy = a.vy;
+                    a.fvz = a.vz;
+                }
+                g.pushMatrix();
+                g.translate(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + a.x, sin(180/PI*(a.frx + 2*PI))*1 + a.y, cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + a.z);
+                g.noStroke();
+                g.fill(122, 122, 122);
+                g.sphere(2);
+                g.popMatrix();
+                g.pushMatrix();
+                g.stroke(92, 90, 48);
+                g.line(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + a.x, sin(180/PI*(a.frx + 2*PI))*1 + a.y, cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + a.z, -sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*12), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*12), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*12));
+                g.stroke(255, 0, 0);
+                g.line(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*12.5), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*12.5), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*12.5), -sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*12), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*12), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*12));
+                g.line(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*12.5), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*12.5), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*12.5), -sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*12), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*12), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*12));
+                g.stroke(189, 189, 189);
+                for(var p = 0; p < 1.5; p += 0.3) {
+                    g.line(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*(12 - p)) + ((-sin(180/PI*(a.fry + PI + PI/2))*(cos(180/PI*(0))*4))*0.5), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*(12 - p)), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*(12 - p)) + ((cos(180/PI*(a.fry + PI + PI/2))*(cos(180/PI*(0))*4))*0.5), -sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*(11 - p)), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*(11 - p)), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*(11 - p)));
+                    g.line(-sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*(12 - p)) + ((-sin(180/PI*(a.fry + PI + 1.5*PI))*(cos(180/PI*(0))*4))*0.5), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*(12 - p)), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*(12 - p)) + ((cos(180/PI*(a.fry + PI + 1.5*PI))*(cos(180/PI*(0))*4))*0.5), -sin(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.x - a.fvx*(11 - p)), sin(180/PI*(a.frx + 2*PI))*1 + (a.y - a.fvy*(11 - p)), cos(180/PI*(a.fry + PI))*(cos(180/PI*(a.frx))*1) + (a.z - a.fvz*(11 - p)));
+                }
+                g.noStroke();
+                g.popMatrix();
+                if(a.vx === 1000) {
+                    a.vx = (a.mooX - a.x)/15;
+                    a.vy = (a.mooY - a.y)/15;
+                    a.vz = (a.mooZ - a.z)/15;
+                }
+                
+            }
+            for(var i = 0; i < arrows.length; i++) {
+                var a = arrows[i];
+                for(var q = 0; q < 25; q++) {
+                    a.x += a.vx*20;
+                    a.y += a.vy*20;
+                    a.z += a.vz*20;
+                    for(var q = 0; q < blocks.length; q++) {
+                        var b = blocks[q];
+                        if(a.y < 2*b.y + 2*(b.h/2) + 2*4 && a.y >= 2*b.y - 2*(b.h/2) - 2*4 && a.x < 2*b.x + 2*(b.w/2) + 2*4 && a.x > 2*b.x - 2*(b.w/2) - 2*4 && a.z < 2*b.z + 2*(b.d/2) + 2*4 && a.z > 2*b.z - 2*(b.d/2) - 2*4) {
+                            a.vx = 0;
+                            a.vy = 0;
+                            a.vz = 0;
+                        }else {
+                            if(a.vx === 0 && a.vz === 0 && a.vy === 0) {
+                            }else {
+                                a.vy += 0.0003;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            
+            
+            if(!keys[16]) {
+                staminaTimer = 0;
+                staminaTimer += staminaSpeed;
+                if(staminaTimer > 0.1) {
+                    stamina += 1/2*staminaSpeed;
+                }
+                
+                if(stamina > 30) {
+                    stamina = 30;
+                }
+            }
+            
+            
+            if(!keys[16]){
+                if(keys[87]) {
+                }else {
+                    stamina += stSpeed/2;
+                }
+            }
+            if(keys[87]) {
+                if(!keys[16]) {
+                    stamina += stSpeed/2;
+                }
+            }else {
+                stamina += stSpeed/2;
+            }
+            
+            if(keys[87] && keys[68]) {
+                moveSped = 2;
+                mov = 0.25*PI;
+            }else 
+            if(keys[87] && keys[65]) {
+                moveSped = 2;
+                mov = 1.75*PI;
+            }else 
+            if(keys[83] && keys[68]) {
+                moveSped = 2*(2/3);
+                mov = 0.75*PI;
+            }else 
+            if(keys[83] && keys[65]) {
+                moveSped = 2*(2/3);
+                mov = 1.25*PI;
+            }else 
+            if(keys[87]) {
+                mov = 0;
+                moveSped = 4*(2/3);
+                if(keys[16] && stamina > 0) {
+                    if(keys[87] || keys[65] || keys[83] || keys[68]) {
+                        moveSped = Speed;
+                        stamina -= stSpeed;
+                    }else {
+                        moveSped = Speed/3;
+                    }
+                }else {
+                    moveSped = Speed/2;
+                }
+            }else
+            if(keys[83]) {
+                moveSped = 2*(2/3);
+                mov = PI;
+            }else
+            if(keys[68]) {
+                moveSped = 2;
+                mov = PI/2;
+            }else
+            if(keys[65]) {
+                moveSped = 2;
+                mov = 1.5*PI;
+            }else {
+                moveSped = 0;
+            }
+            
+            if(keys[87] || keys[83] || keys[65] || keys[68]) {
+                if(xvel/2 <= 1.5 && xvel/2 >= -1.5) {
+                    if(abs(xvel) < (-sin(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))) {
+                        xvel += (-sin(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))/20;
+                    }else if(abs(xvel) > (-sin(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))) {
+                        xvel += (-sin(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))/20;
+                    }else {
+                        xvel = (-sin(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)));
+                    }
+                }
+                if(zvel/2 <= 1.5 && zvel/2 >= -1.5) {
+                    if(abs(zvel) < (cos(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))) {
+                        zvel += (cos(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))/20;
+                    }else if(abs(zvel) > (cos(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))) {
+                        zvel += (cos(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)))/20;
+                    }else {
+                        zvel = (cos(180/PI*(ry + PI + mov))*(cos(180/PI*(0))*(moveSped + 1)));
+                    }
+                }
+            }
+            
+            if(xvel/2 >= 0.005 || xvel/2 <= -0.005) {
+                xvel *= 0.90;
+            }
+            if(zvel/2 >= 0.005 || zvel/2 <= -0.005) {
+                zvel *= 0.90;
+            }
+            if(zvel/2 < 0.005 && zvel/2 > -0.005) {
+                zvel = 0;
+            }
+            if(xvel/2 < 0.005 && xvel/2 > -0.005) {
+                xvel = 0;
+            }
+            
+            Y += yvel;
+            yvel -= 2*0.15;
+            if(yvel < 2*-100) {
+                yvel = 2*-100;
+            }
+            
+            if(keys[RIGHT]) {
+                ry += TurnSpeed;
+            }
+            if(keys[LEFT]) {
+                ry -= TurnSpeed;
+            }
+            if(keys[UP]) {
+                rx -= TurnSpeed;
+            }
+            if(keys[DOWN]) {
+                rx += TurnSpeed;
+            }
+            if(rx > PI/2) {
+                rx = PI/2;
+            }
+            if(rx < -PI/2) {
+                rx = -PI/2;
+            }
+            if(ry > PI) {
+                ry = -PI;
+            }
+            if(ry < -PI) {
+                ry = PI;
+            }
+            
+            if(ry < -PI) {
+                ry += 2*PI;
+            }
+            if(ry > PI) {
+                ry -= 2*PI;
+            }
+            if(stamina < 0) {
+                stamina = 0;
+            }
+            if(stamina > 29) {
+                stamina = 29;
+            }
+            
+        }else {
+            respawn = true;
+            if(respawn === true) {
+                jump = true;
+                canJump = false;
+                canWallJump = false;
+                respawn = false;
+                shoot = false;
+                TurnSpeed = 0.03;
+                X = spawnX;
+                Y = spawnY;
+                Z = spawnZ;
+                rx = 0;
+                ry = PI;
+                rz = 0;
+                Speed = 5;
+                moveSped = 2;
+                yvel = 0;
+                xvel = 0;
+                zvel = 0;
+                mov = 0;
+                staminaTimer = 0;
+                staminaSpeed = 0.1;
+                stamina =  30;
+                stSpeed = 0.2;
+                playerh = 30;
+                health = playerh;
+                ground = false;
+                start = false;
+                respawn = false;
+            }
+        }
+        if(Y*2 < -5000) {
+            health--;
+        }
+        
+        imageMode(CENTER);
+        image(g, width/2, height/2, width, height);
+        noStroke();
+        for(var i = 0; i < stamina; i += 0.1) {
+            fill(0, i * 255 / 30, 255 - i * 255 / 30);
+            rectMode(CORNER);
+            rect(width/12 + i*width/120 - width/20, height*0.96666666666666666666, width/120, height/40);
+            rectMode(CORNERS);
+            fill(36, 250, 3);
+        }
+        rectMode(CORNER);
+        fill(0, 0, 0);
+        stroke(0, 0, 0);
+        rect(width/12 - width/20 - 1, height/30 - 1, 187, 21);
+        noStroke();
+        for(var w = 0; w < health; w += 0.1) {
+            fill(255 - w*255/playerh, w*255/playerh, 0);
+            rectMode(CORNER);
+            rect(width/12 + w*(width/3.33333333333/playerh) - width/20, height/30, width/3.33333333333333/playerh + 1, height/30);
+        }
+        rectMode(CENTER);
+        fill(0, 0, 0, 150);
+        rect(width/2, height/2 - height/85.72, width/500, height/60);
+        rect(width/2 - width/85.72, height/2, width/60, height/500);
+        rect(width/2, height/2 + height/85.72, width/500, height/60);
+        rect(width/2 + width/85.72, height/2, width/60, height/500);
+        if(stamina > 29) {
+            stamina = 29;
+        }
+        //text(round(X) + ", " + round(Y) + ", " + round(Z), 300, 10);
+        //text(round(yvel), 300, 30);
     }
-    if (width!==400&&height!==400){
-        throw{message:("See this program on: https://www    .khanacademy.org/hour-of-code/hi-wingstonsnowy-agin        /4915657294086144")};
-    }
-    var v = random(0,100);
-    //chrismass speical
-    /*fill(0, 100, 0);
-    triangle(80,200,30,300,130,300);
-    fill(100, 70, 0);
-    rect(70,300,20,50);
-    fill(140, 120, 0);
-    rect(70,305,10,20,10);
-    fill(70, 40, 0);
-    quad(50,350,110,350,105,360,55,360);
-    fill(79, 49, 0);
-    quad(60,360,100,360,90,380,70,380);
-    stroke(190, 190, 190);
-    strokeWeight(15);
-    line(70, 220, 90, 220);
-    line(60, 240, 100, 240);
-    line(50, 260, 110, 260);
-    line(40, 280, 120, 280);
-    stroke(160, 160, 160);
-    strokeWeight(10);
-    line(70, 220, 90, 220);
-    line(60, 240, 100, 240);
-    line(50, 260, 110, 260);
-    line(40, 280, 120, 280);
-    noStroke();
-    fill(255, 0, 0);
-    ellipse(60,280,20,20);
-    ellipse(90,260,20,20);
-    fill(0, 255, 0);
-    ellipse(50,260,20,20);
-    ellipse(70,240,20,20);
-    fill(0, 0, 255);
-    ellipse(90,280,20,20);
-    ellipse(90,220,20,20);
-    fill(255, 255, 0);
-    ellipse(80,200,30,30);
-    fill(255, 255, 0,200);
-    ellipse(80,200,35,35);
-    fill(255, 255, 0, 100);
-    ellipse(80,200,40,40);*/
-    
-    //Halloween special
-    /*fill(0, 100, 0);
-    rect(70,300,20,40,30);
-    fill(255, 100, 0);
-    ellipse(80,350,50,80);
-    ellipse(60,350,45,70);
-    ellipse(100,350,45,70);
-    fill(0, 0, 0);
-    if(v>60&&v<70){
-        fill(255, 255, 0);
-    }
-    if(v>70&&v<80){
-        fill(255, 50, 0);
-    }
-    if(v>80){
-        fill(255, 0, 0);
-    }
-    arc(65,335,20,20,50,230);
-    arc(95,335,20,20,-50,130);
-    arc(80,370,40,20,-180,0);*/
-    };
-}
-}
+};
+
         var canvas = document.getElementById("drawingm");
 
     var processingInstance = new Processing(canvas, nig);
